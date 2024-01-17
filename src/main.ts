@@ -2,7 +2,7 @@ import './style.css'
 import * as contants from './constants'
 import { piece } from "./types";
 
-const canvas = document.querySelector('canvas');
+const canvas: HTMLCanvasElement | null = document.querySelector('canvas');
 const ctx = canvas?.getContext('2d');
 
 canvas!.width = contants.FIELD_WIDTH * contants.BLOCK_SIZE;
@@ -10,18 +10,18 @@ canvas!.height = contants.FIELD_HEIGHT * contants.BLOCK_SIZE;
 
 ctx?.scale(contants.BLOCK_SIZE, contants.BLOCK_SIZE);
 
-const field = Array(contants.FIELD_HEIGHT).fill(null).map(() => Array(contants.FIELD_WIDTH).fill(0));
+const field: number[][] = Array(contants.FIELD_HEIGHT).fill(null).map(() => Array(contants.FIELD_WIDTH).fill(0));
 
-let piece = pickRandomPiece();
-let playButton = document.getElementById('playButton');
-let scoreElement = document.getElementById('score');
+let piece: piece = pickRandomPiece();
+let playButton: HTMLElement | null = document.getElementById('playButton');
+let scoreElement: HTMLElement | null = document.getElementById('score');
 playButton?.addEventListener('click', playGame);
 
-let score = 0;
+let score: number = 0;
+let dropCounter: number = 0;
+let lastTime: number = 0;
 
-let dropCounter = 0;
-let lastTime = 0;
-
+// GAME ACTIONS
 function update(time = 0) {
     const deltaTime = time - lastTime;
     lastTime = time;
@@ -41,6 +41,7 @@ function update(time = 0) {
 }
 
 function playGame() {
+    score = 0;
     update();
     new Audio('public/TetrisRemix.mp3').play();
 }
@@ -69,6 +70,11 @@ function draw() {
     scoreElement!.innerText = `${score}`;
 }
 
+function gameOver() {
+    alert('GAME OVER');
+    field.forEach((row) => { row.fill(0) });
+}
+
 // USER INTERACTION
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
@@ -92,7 +98,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// LOGIC
+// GAME LOGIC
 function checkCollisions() {
     return piece.shape.find((row: any[], y: number) => {
         if (field[y + piece.position.y] === undefined) { return true }
@@ -161,11 +167,5 @@ function rotatePiece() {
     if (checkCollisions()) {
         piece.shape = previousShape
     }
-
-
 }
 
-function gameOver() {
-    alert('GAME OVER');
-    field.forEach((row) => { row.fill(0) });
-}

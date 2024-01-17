@@ -1,5 +1,5 @@
 export type piece = {
     color: string;
     position: { x: number, y: number };
-    shape: any[]
+    shape: number[][];
 };
