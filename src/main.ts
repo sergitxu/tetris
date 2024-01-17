@@ -1,5 +1,6 @@
 import './style.css'
 import * as contants from './constants'
+import { piece } from "./types";
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas?.getContext('2d');
@@ -12,9 +13,11 @@ ctx?.scale(contants.BLOCK_SIZE, contants.BLOCK_SIZE);
 const field = Array(contants.FIELD_HEIGHT).fill(null).map(() => Array(contants.FIELD_WIDTH).fill(0));
 
 let piece = pickRandomPiece();
-piece.position = { x: 4, y: 0 } // TODO remove position from constants as are always the same.
 let playButton = document.getElementById('playButton');
+let scoreElement = document.getElementById('score');
 playButton?.addEventListener('click', playGame);
+
+let score = 0;
 
 let dropCounter = 0;
 let lastTime = 0;
@@ -62,6 +65,8 @@ function draw() {
             }
         })
     })
+
+    scoreElement!.innerText = `${score}`;
 }
 
 // USER INTERACTION
@@ -82,6 +87,8 @@ document.addEventListener('keydown', (e) => {
             piece.position.y--;
             fixPiece();
         };
+    } else if (e.key === 'ArrowUp') {
+        rotatePiece();
     }
 });
 
@@ -109,6 +116,9 @@ function fixPiece() {
     resetPiecePosition();
     deteleRows();
     piece = pickRandomPiece();
+    if (checkCollisions()) {
+        gameOver();
+    }
 }
 
 function resetPiecePosition() {
@@ -125,6 +135,7 @@ function deteleRows() {
             field.unshift(Array(contants.FIELD_WIDTH).fill(0));
         }
     })
+    score += rows ** 2;
     return rows;
 }
 
@@ -133,5 +144,28 @@ function pickRandomPiece() {
     return contants.PIECES[randomPiece];
 }
 
-// update();
+function rotatePiece() {
+    const rotatedShape = [];
 
+    for (let i = 0; i < piece.shape[0].length; i++) {
+        const row = [];
+
+        for (let j = piece.shape.length - 1; j >= 0; j--) {
+            row.push(piece.shape[j][i]);
+        }
+        rotatedShape.push(row);
+    }
+
+    const previousShape = piece.shape;
+    piece.shape = rotatedShape;
+    if (checkCollisions()) {
+        piece.shape = previousShape
+    }
+
+
+}
+
+function gameOver() {
+    alert('GAME OVER');
+    field.forEach((row) => { row.fill(0) });
+}
