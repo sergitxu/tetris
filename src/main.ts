@@ -12,7 +12,7 @@ ctx?.scale(contants.BLOCK_SIZE, contants.BLOCK_SIZE);
 const field = Array(contants.FIELD_HEIGHT).fill(null).map(() => Array(contants.FIELD_WIDTH).fill(0));
 
 let piece = pickRandomPiece();
-piece.position = { x: 4, y: 0 };
+piece.position = { x: 4, y: 0 } // TODO remove position from constants as are always the same.
 let playButton = document.getElementById('playButton');
 playButton?.addEventListener('click', playGame);
 
@@ -25,10 +25,10 @@ function update(time = 0) {
     dropCounter += deltaTime;
 
     if (dropCounter > 2000) {
-        piece.position!.y++;
+        piece.position.y++;
         dropCounter = 0;
         if (checkCollisions()) {
-            piece.position!.y--;
+            piece.position.y--;
             fixPiece();
         };
 
@@ -58,7 +58,7 @@ function draw() {
         row.forEach((value, x) => {
             if (value) {
                 ctx!.fillStyle = piece.color;
-                ctx!.fillRect(x + piece.position!.x, y + piece.position!.y, 1, 1);
+                ctx!.fillRect(x + piece.position.x, y + piece.position.y, 1, 1);
             }
         })
     })
@@ -67,19 +67,19 @@ function draw() {
 // USER INTERACTION
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
-        piece.position!.x--;
+        piece.position.x--;
         if (checkCollisions()) {
-            piece.position!.x++;
+            piece.position.x++;
         };
     } else if (e.key === 'ArrowRight') {
-        piece.position!.x++;
+        piece.position.x++;
         if (checkCollisions()) {
-            piece.position!.x--;
+            piece.position.x--;
         };
     } else if (e.key === 'ArrowDown') {
-        piece.position!.y++;
+        piece.position.y++;
         if (checkCollisions()) {
-            piece.position!.y--;
+            piece.position.y--;
             fixPiece();
         };
     }
@@ -88,11 +88,11 @@ document.addEventListener('keydown', (e) => {
 // LOGIC
 function checkCollisions() {
     return piece.shape.find((row: any[], y: number) => {
-        if (field[y + piece.position!.y] === undefined) { return true }
+        if (field[y + piece.position.y] === undefined) { return true }
         return row.find((value, x) => {
             return (
                 value !== 0 &&
-                field[y + piece.position!.y][x + piece.position!.x] !== 0
+                field[y + piece.position.y][x + piece.position.x] !== 0
             )
         })
     })
@@ -102,7 +102,7 @@ function fixPiece() {
     piece.shape.forEach((row: any[], y: number) => {
         row.forEach((value, x) => {
             if (value === 1) {
-                field[y + piece.position!.y][x + piece.position!.x] = 1;
+                field[y + piece.position.y][x + piece.position.x] = 1;
             }
         })
     })
@@ -112,8 +112,8 @@ function fixPiece() {
 }
 
 function resetPiecePosition() {
-    piece.position!.y = 0;
-    piece.position!.x = 4;
+    piece.position.y = 0;
+    piece.position.x = 4;
 }
 
 function deteleRows() {

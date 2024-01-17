@@ -8,6 +8,7 @@ export const BLOCK_SIZE = 20;
 export const PIECES: piece[] = [
     {
         color: 'blue',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1],
             [1, 1]
@@ -15,12 +16,14 @@ export const PIECES: piece[] = [
     },
     {
         color: 'red',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1, 1, 1]
         ]
     },
     {
         color: 'yellow',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1, 1],
             [0, 0, 1]
@@ -28,6 +31,7 @@ export const PIECES: piece[] = [
     },
     {
         color: 'magenta',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1, 1],
             [1, 0, 0]
@@ -35,6 +39,7 @@ export const PIECES: piece[] = [
     },
     {
         color: 'cyan',
+        position: { x: 4, y: 0 },
         shape: [
             [0, 1, 1],
             [1, 1, 0]
@@ -42,6 +47,7 @@ export const PIECES: piece[] = [
     },
     {
         color: 'lime',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1, 1],
             [0, 1, 0]
@@ -49,6 +55,7 @@ export const PIECES: piece[] = [
     },
     {
         color: 'orange',
+        position: { x: 4, y: 0 },
         shape: [
             [1, 1, 0],
             [0, 1, 1]
