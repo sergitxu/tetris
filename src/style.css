@@ -20,3 +20,8 @@ body {
   display: grid;
   place-content: center;
 }
+
+button {
+  display: block;
+  margin: 10px auto;
+}
